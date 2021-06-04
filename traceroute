@@ -1,0 +1,16 @@
+#!/bin/bash
+cat iplist | while read ips
+do
+ traceroute "$ips"  > trace2.txt
+ grep ntt trace2.txt > /dev/null
+ if [ $? -eq 0 ] ; then
+     echo $ips TRAFFIC VIA NTT LINK
+ else
+ grep otw trace2.txt > /dev/null
+ if [ $? -eq 0 ] ; then
+     echo $ips TRAFFIC VIA OTW LINK
+else
+     echo $ips OFFICE TO OFFICE TRAFFIC
+ fi
+ fi
+done
